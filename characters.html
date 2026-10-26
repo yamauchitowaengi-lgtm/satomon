@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>なかまたち | さとモンと仲間たち</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+.tabs{display:flex;gap:8px;margin:12px 0 20px;flex-wrap:wrap}
+.tab{border:2px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;padding:5px 18px;border-radius:99px;cursor:pointer}
+.tab[aria-pressed=true]{background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.c{background:var(--paper);border:2px solid var(--line);border-radius:20px;overflow:hidden}
+.c .pic{aspect-ratio:3/4}
+.c .bd{padding:12px 16px 14px}
+.c h3{margin:0;font-size:1.1rem}.role{color:var(--sub);font-size:.78rem;margin:0 0 6px}
+.q{font-size:.88rem;background:var(--honey);border-radius:12px 12px 12px 2px;padding:6px 12px;margin:6px 0}
+summary{cursor:pointer;font-size:.82rem;color:var(--leaf-d)}
+dl{margin:6px 0 0;font-size:.82rem}dt{font-weight:700;float:left;margin-right:.5em}dd{margin:0 0 2px}
+.rel{margin-top:40px;background:var(--paper);border:2px dashed var(--leaf);border-radius:20px;padding:6px 22px 16px}
+.rel ul{padding-left:1.2em;margin:.4em 0}.rel li{margin:.2em 0}
+</style></head><body>
+<main>
+<h2>なかまたち</h2>
+<div class="tabs" role="group" aria-label="画像のタイプ"><button class="tab" data-s="real">実写風</button><button class="tab" data-s="anime">アニメ風</button><button class="tab" data-s="chibi">ちびキャラ</button></div>
+<div class="grid" id="g"></div>
+<section class="rel"><h2>相関図</h2><ul>
+<li>さとモン ⇄ はなモン：凸凹コンビ（はなモンが上手に動かしている）</li>
+<li>ニャシバシ → さとモン：喝を入れるツンデレ監理員／岩橋課長とは顔が似ている？</li>
+<li>杉井顧問 ⇄ さとモン：ラーメン仲間／岩橋課長は杉井顧問に頭が上がらない</li>
+<li>岩橋課長 → 高橋副課長：たしなめられる側／吉野係長が全体をやさしく見守る</li>
+<li>佐藤主任 ⇄ 鈴木技師：ドジをフォローする、頼れる先輩後輩</li></ul></section>
+</main>
+<script>
+var C=[
+["satomon","さとモン","マスコット／現場調査・PR担当","現場の調査なら任せるモン！……あ、でもその前にお昼ごはんまだだモン？","10月10日生まれ・155cm/95kg","ゴルフ、現場飯めぐり","🐻"],
+["hanamon","はなモン","マスコット／広報・緑化担当","さとモン先輩、また居眠りしてるモン？ 代わりに私がしっかりPRしておくモン♪","3月8日生まれ・142cm","お花チェック、ゴルフの練習（内緒）","🌸"],
+["nyashibashi","ニャシバシ","マスコット／現場特別監理員","甘いニャ！ 現場のミリ単位のズレは許さないニャ！","2月22日生まれ・135cm/42kg","安全パトロール、日向ぼっこ","🐱"],
+["sato","佐藤 恵美","設計課 主任","さとモン、またデスクで寝てますね？ あれ、私のメガネは……（おでこの上）","25歳・158cm","DIY（木工）、スケジュール管理","👩"],
+["suzuki","鈴木 綾乃","設計課 技師","データの整合性は確認済みです。さとモン、作業着にドーナツの粉がついていますよ。","28歳・162cm","カフェ巡り、ミステリー小説","👓"],
+["iwahashi","岩橋 聡一","設計課 課長","今回の構造計算、完璧だな。……おや、あちらの素敵な担当者さんは？","45歳・171cm","ゴルフ（ギャラリー次第でスライス）","👔"],
+["takahashi","高橋 涼介","設計課 副課長","大丈夫、そこは僕が計算し直しておきますよ。焦らず一つずつ確認しましょう。","37歳・182cm","アコースティックギター、家族でキャンプ","🎸"],
+["sugii","杉井 克彦","設計課 顧問","フォフォフォ、課長、また力んでスライスしたのかい？ よし、反省会はラーメンじゃ。","68歳・166cm","街中華めぐり、駄菓子屋めぐり、手品","👴"],
+["yoshino","吉野 和代","総務・経理課 係長","みんな、今日もお疲れ様。ほら、お茶でもどうぞ。","52歳・155cm","観葉植物、手作りお菓子","🍵"]];
+var s=localStorage.getItem("cs")||"anime";
+function draw(){
+ document.getElementById("g").innerHTML=C.map(function(c){return '<article class="c"><div class="pic"><span>'+c[6]+'</span><img src="assets/chars/'+c[0]+'_'+s+'.png" alt="'+c[1]+'" loading="lazy" onerror="this.remove()"></div><div class="bd"><h3>'+c[1]+'</h3><p class="role">'+c[2]+'</p><p class="q">'+c[3]+'</p><details><summary>くわしく</summary><dl><dt>基本</dt><dd>'+c[4]+'</dd><dt>趣味</dt><dd>'+c[5]+'</dd></dl></details></div></article>'}).join("");
+ document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.s==s)});
+}
+document.querySelector(".tabs").onclick=function(e){var b=e.target.closest(".tab");if(!b)return;s=b.dataset.s;try{localStorage.setItem("cs",s)}catch(x){}draw()};
+draw();
+</script>
+<script src="common.js"></script></body></html>

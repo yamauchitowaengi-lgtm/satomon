@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ギャラリー | さとモンと仲間たち</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+.sub{color:var(--sub);font-size:.88rem;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.d{display:block;text-decoration:none;background:var(--paper);border:2px solid var(--line);border-radius:6px 18px 18px 6px;border-left:10px solid var(--honey);overflow:hidden;transition:transform .15s,border-color .15s}
+.d:hover{transform:translateY(-3px);border-color:var(--leaf)}.d:focus-visible{outline:3px solid var(--leaf)}
+.d .pic{aspect-ratio:210/297}.d .pic img{object-position:top}
+.d .bd{padding:6px 12px 8px;font-size:.88rem}.d b{display:block}.d small{color:var(--sub)}
+</style></head><body>
+<main>
+<h2>ギャラリー</h2>
+<p class="sub">実写風フォトブック。新しいものが上に並びます。</p>
+<div class="grid" id="g"></div>
+</main>
+<script src="gallery-data.js"></script>
+<script>
+function pad(n){return("0000"+n).slice(-5)}
+document.getElementById("g").innerHTML=GALLERY.items.slice().sort(function(a,b){return b.no-a.no}).map(function(d){var p=pad(d.no);
+ return'<a class="d" href="gallery/'+GALLERY.prefix+p+'.html"><div class="pic"><span>📷</span><img src="assets/gallery/'+GALLERY.prefix+p+'.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="bd"><b>'+(d.title||"ギャラリー "+p)+'</b>'+(d.date?'<small>'+d.date+'</small>':'')+'</div></a>'}).join("")||"<p class=\"sub\">まだ作品がありません。</p>";
+</script>
+<script src="common.js"></script></body></html>

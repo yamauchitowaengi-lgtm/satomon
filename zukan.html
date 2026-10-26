@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>空想動物図鑑 | さとモンと仲間たち</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+.sub{color:var(--sub);font-size:.88rem;margin:0 0 14px}
+.rk{background:var(--paper);border:2px dashed var(--leaf);border-radius:16px;padding:8px 16px;margin-bottom:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn{border:2px solid var(--leaf);background:var(--leaf);color:#fff;font:inherit;font-weight:700;padding:6px 20px;border-radius:99px;cursor:pointer}
+.btn.o{background:var(--paper);color:var(--ink);border-color:var(--line)}.btn:disabled{opacity:.4}
+.btn:focus-visible,.cd:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.cd{border:2px solid var(--line);background:var(--paper);border-radius:16px;overflow:hidden;padding:0;cursor:pointer;font:inherit;color:inherit;text-align:center}
+.cd:hover{border-color:var(--leaf)}.cd .pic{aspect-ratio:1}.cd b{display:block;font-size:.85rem;padding:4px 4px 6px}
+.cd small{color:var(--sub);display:block;font-size:.72rem}
+.sil img{filter:brightness(0) opacity(.45)}.sil span{filter:grayscale(1) brightness(0);opacity:.4}
+.st{color:#d9a53b;letter-spacing:1px}
+#hunt{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:14px 18px;margin-bottom:18px;display:none}
+#hunt .pic{width:min(220px,60%);aspect-ratio:1;margin:6px auto;border-radius:16px}
+.bar{position:relative;height:22px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0}
+.zone{position:absolute;top:0;bottom:0;background:var(--leaf);opacity:.7}
+.mk{position:absolute;top:0;bottom:0;width:6px;background:var(--ink);border-radius:3px}
+.cut{display:flex;gap:10px;align-items:center;margin:8px 0;min-height:48px}
+.av{width:46px;height:46px;border-radius:50%;flex:none;background:var(--sakura);display:grid;place-items:center;position:relative;overflow:hidden}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bub{background:var(--honey);border-radius:14px 14px 14px 2px;padding:6px 12px;font-size:.88rem}
+dialog{border:0;border-radius:22px;background:var(--paper);color:var(--ink);padding:0;width:min(560px,94vw);max-height:92vh}
+dialog::backdrop{background:rgba(50,45,35,.5)}
+.dw{padding:16px 20px 20px}.dw .pic{aspect-ratio:1;border-radius:16px;margin-bottom:10px}
+.dw h3{margin:0;font-size:1.3rem}.dw dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.86rem;margin:8px 0}
+.dw dt{color:var(--sub)}.dw dd{margin:0}
+.cl{display:flex;justify-content:space-between;margin-top:12px}
+.pp{display:flex;gap:10px;align-items:center;justify-content:center;margin:6px 0}
+.pp .pic{width:110px;aspect-ratio:1;border-radius:14px}
+#brd{display:none;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:6px 18px 14px;margin-bottom:18px}
+#brd select,#brd input{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:4px 8px;max-width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.kd{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.86rem;margin:6px 0}.kd dt{color:var(--sub)}.kd dd{margin:0}
+</style></head><body>
+<main>
+<h2>空想動物図鑑</h2>
+<p class="sub">さとモンが現場で見つけた珍生物たち。「探す」でつかまえると、くわしく見られます。</p>
+<div class="rk"><span id="rk"></span><button class="btn" id="go">探す</button></div>
+<section id="hunt" aria-live="polite">
+<div class="pic sil" id="hp"></div><p id="hm" style="text-align:center;margin:0">なにかの気配がする……</p>
+<div class="bar"><div class="zone" id="hz"></div><div class="mk" id="hk"></div></div>
+<div style="text-align:center"><button class="btn" id="hc">つかまえる！</button> <button class="btn o" id="hx">やめる</button></div>
+<div class="cut" id="hcut"></div>
+</section>
+<section id="brd"><h2>掛け合わせ</h2>
+<p class="sub" id="bmsg">つかまえた個体が2種以上になると、掛け合わせられます。</p>
+<div class="row"><select id="ba" aria-label="1匹目"></select><b>×</b><select id="bb" aria-label="2匹目"></select><button class="btn" id="bgo">掛け合わせる</button></div>
+<div class="row"><input id="bi" placeholder="友達のコード（例：ZK-1-2-k3f9a）" aria-label="共有コード"><button class="btn o" id="bin">コードから見る</button></div>
+<p class="sub" id="bm2" aria-live="polite"></p>
+<div id="bo" hidden></div></section>
+<div class="grid" id="g"></div>
+</main>
+<dialog id="dlg"><div class="dw" id="dw"></div></dialog>
+<script src="zukan-data.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)},Z=(typeof ZUKAN!="undefined"?ZUKAN:[]).slice().sort(function(a,b){return a.no-b.no});
+var ALL=location.hash=="#all",got={};try{got=JSON.parse(localStorage.getItem("zk-got")||"{}")}catch(e){}
+var RK=[[0,"たまごトレーナー"],[1,"見習いトレーナー"],[5,"観察員"],[15,"探検家"],[30,"ハンター"],[60,"図鑑博士"],[100,"伝説の図鑑王"]];
+var CH={sato:["sato","佐藤主任","👩"],suzuki:["suzuki","鈴木技師","👓"],sugii:["sugii","杉井顧問","👴"],nya:["nyashibashi","ニャシバシ","🐱"]};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function stars(n){return"★".repeat(n)+"☆".repeat(5-n)}
+function has(z){return ALL||got[z.no]>0}
+function save(){try{localStorage.setItem("zk-got",JSON.stringify(got))}catch(e){}}
+function pic(z,sil){return'<span>🐾</span>'+(z.img?'<img src="'+esc(z.img)+'" alt="'+(sil?"":esc(z.name))+'" onerror="this.remove()">':"")}
+function av(c,fn){var h=CH[c];return'<div class="av"><span>'+h[2]+'</span><img src="assets/chars/'+h[0]+'_chibi.png" alt="" onerror="this.remove()"></div>'}
+function draw(){
+ var n=Z.filter(function(z){return got[z.no]>0}).length,r=0;RK.forEach(function(x,i){if(n>=x[0])r=i});
+ var nx=RK[r+1];$("rk").innerHTML="<b>"+RK[r][1]+"</b>　つかまえた "+n+" / "+Z.length+" 種"+(nx?"（次の称号まであと "+(nx[0]-n)+" 種）":"（最高ランク！）");
+ $("go").disabled=!Z.length;if(typeof fillB=="function")fillB();
+ $("g").innerHTML=Z.length?Z.map(function(z){var h=has(z);return'<button class="cd" data-n="'+z.no+'"><div class="pic'+(h?"":" sil")+'">'+pic(z,!h)+'</div><b>'+(h?esc(z.name):"？？？")+'</b><small>No.'+("00"+z.no).slice(-3)+(h?'　<span class="st">'+stars(z.rar)+'</span>':"")+'</small></button>'}).join(""):'<p class="sub">まだ図鑑にデータがありません。メーカーから書き出した zukan-data.js を置いてください。</p>';
+}
+function detail(z){
+ var cm=Object.keys(CH).filter(function(k){return z.cm&&z.cm[k]}).map(function(k){return'<div class="cut">'+av(k)+'<div class="bub"><small>'+CH[k][1]+'</small><br>'+esc(z.cm[k])+'</div></div>'}).join("");
+ $("dw").innerHTML='<div class="pic">'+pic(z)+'</div><small>No.'+("00"+z.no).slice(-3)+'</small><h3>'+esc(z.name)+' <span class="st">'+stars(z.rar)+'</span></h3><p style="margin:4px 0">'+esc(z.desc)+'</p>'
+ +'<dl><dt>分類</dt><dd>'+esc(z.cls)+'</dd><dt>大きさ</dt><dd>全長 '+esc(z.len)+'／体重 '+esc(z.wt)+'</dd><dt>好物</dt><dd>'+esc(z.food)+'</dd><dt>発見場所</dt><dd>'+esc(z.loc)+'</dd><dt>危険度</dt><dd><span class="st">'+stars(z.dng||1)+'</span>　'+esc(z.note)+'</dd></dl>'+cm
+ +'<p style="text-align:center;margin:12px 0 0"><button class="btn" data-d="s">カード画像を保存</button></p><div class="cl"><button class="btn o" data-d="p">← 前</button><button class="btn o" data-d="c">閉じる</button><button class="btn o" data-d="n">次 →</button></div>';
+ $("dlg").dataset.n=z.no;if(!$("dlg").open)$("dlg").showModal();
+}
+function step(d){var c=+$("dlg").dataset.n,l=Z.filter(has),i=l.findIndex(function(z){return z.no==c});if(l.length)detail(l[(i+d+l.length)%l.length])}
+$("g").onclick=function(e){var b=e.target.closest(".cd");if(!b)return;var z=Z.find(function(x){return x.no==b.dataset.n});if(has(z))detail(z);else $("go").focus()};
+$("dw").onclick=function(e){var d=e.target.dataset.d;if(d=="c")$("dlg").close();if(d=="p")step(-1);if(d=="s")makeCard(Z.find(function(z){return z.no==$("dlg").dataset.n}));if(d=="n")step(1)};
+$("dlg").onclick=function(e){if(e.target==$("dlg"))$("dlg").close()};
+// ---- カード画像の書き出し ----
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function wrapLines(c,t,w,max){var o=[],l="";for(var i=0;i<t.length;i++){if(c.measureText(l+t[i]).width>w){o.push(l);l=t[i]}else l+=t[i]}if(l)o.push(l);if(o.length>max){o=o.slice(0,max);o[max-1]=o[max-1].slice(0,-1)+"…"}return o}
+async function makeCard(z){
+ var F='"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif',W=900,H=1260;
+ try{await document.fonts.load('700 40px "Zen Maru Gothic"');await document.fonts.load('400 30px "Zen Maru Gothic"')}catch(e){}
+ var T=[0,["#e7f2dc","#8fbf9a"],["#dcefd0","#6fae7d"],["#f9dfe3","#e6a9b3"],["#fbefcf","#e0b95c"],["#fff0b8","#e0a82e"]][Math.min(5,Math.max(1,z.rar||1))];
+ var im=await new Promise(function(r){if(!z.img)return r(null);var i=new Image();i.onload=function(){r(i)};i.onerror=function(){r(null)};i.src=z.img});
+ var cv=document.createElement("canvas");cv.width=W;cv.height=H;var c=cv.getContext("2d");
+ c.fillStyle=T[0];rr(c,0,0,W,H,48);c.fill();c.lineWidth=14;c.strokeStyle=T[1];rr(c,7,7,W-14,H-14,44);c.stroke();
+ c.fillStyle="#fffdf7";rr(c,36,36,W-72,H-72,32);c.fill();
+ c.textBaseline="alphabetic";c.textAlign="left";
+ c.fillStyle="#8a8174";c.font="400 30px "+F;c.fillText("No."+("00"+z.no).slice(-3),80,112);
+ c.fillStyle="#4b4439";c.font="700 64px "+F;c.fillText(z.name,80,186);
+ c.fillStyle="#d9a53b";c.font="700 44px "+F;c.textAlign="right";c.fillText(stars(z.rar),820,186);c.textAlign="left";
+ c.fillStyle=T[0];rr(c,80,224,740,520,28);c.fill();
+ if(im){c.save();rr(c,80,224,740,520,28);c.clip();var s=Math.min(740/im.width,520/im.height),w=im.width*s,h=im.height*s;c.drawImage(im,80+(740-w)/2,224+(520-h)/2,w,h);c.restore()}
+ else{c.fillStyle="#8a8174";c.font="400 120px "+F;c.textAlign="center";c.fillText("🐾",450,520);c.textAlign="left"}
+ var rows=[["分類",z.cls],["大きさ","全長 "+z.len+" ／ 体重 "+z.wt],["好物",z.food],["発見場所",z.loc]],y=806;
+ rows.forEach(function(r){c.fillStyle="#8a8174";c.font="400 26px "+F;c.fillText(r[0],80,y);c.fillStyle="#4b4439";c.font="700 28px "+F;c.fillText(r[1],230,y);y+=46});
+ c.fillStyle="#8a8174";c.font="400 26px "+F;c.fillText("危険度",80,y);c.fillStyle="#d9a53b";c.font="700 30px "+F;c.fillText(stars(z.dng||1),230,y);y+=52;
+ c.fillStyle="#4b4439";c.font="400 25px "+F;wrapLines(c,z.desc||"",740,3).forEach(function(l){c.fillText(l,80,y);y+=36});
+ c.fillStyle="#8a8174";c.font="400 24px "+F;c.textAlign="center";c.fillText("さとモンと仲間たち ・ 空想動物図鑑",450,H-56);
+ var name="zukan-"+("00"+z.no).slice(-3)+".png";
+ try{cv.toBlob(function(b){if(!b)return;
+  var f=new File([b],name,{type:"image/png"});
+  if(matchMedia("(pointer:coarse)").matches&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:z.name}).catch(function(){});return}
+  var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},5000)},"image/png")}
+ catch(e){alert("カード画像を作れませんでした。ファイルを直接開いている場合は、サイトに公開してからお試しください。")}
+}
+// ---- つかまえるゲーム ----
+var H=null;
+function cut(c,t){$("hcut").innerHTML=av(c)+'<div class="bub"><small>'+(c=="hana"?"はなモン":c=="iwa"?"岩橋課長":CH[c][1])+'</small><br>'+t+'</div>'}
+CH.hana=["hanamon","はなモン","🌸"];CH.iwa=["iwahashi","岩橋課長","👔"];
+function pickZ(){var pool=Z.filter(function(z){return!got[z.no]});if(!pool.length)pool=Z;var w=pool.map(function(z){return Math.max(1,6-z.rar)}),t=w.reduce(function(a,b){return a+b},0),r=Math.random()*t,i=0;while(r>w[i]){r-=w[i];i++}return pool[i]}
+$("go").onclick=function(){if(H)return;var z=pickZ(),zw=Math.max(14,42-6*z.rar);H={z:z,c:20+Math.random()*(60-zw)+zw/2,w:zw,t0:performance.now(),sp:1+.18*z.rar,on:1};
+ $("hunt").style.display="block";$("hp").className="pic sil";$("hp").innerHTML=pic(z,true);$("hm").textContent="なにかの気配がする……！ 緑のところでタイミングよく！";
+ $("hz").style.left=(H.c-zw/2)+"%";$("hz").style.width=zw+"%";$("hc").disabled=false;$("hcut").innerHTML="";loop()};
+function pos(){return(Math.sin((performance.now()-H.t0)/380*H.sp-Math.PI/2)+1)/2*100}
+function loop(){if(!H||!H.on)return;$("hk").style.left="calc("+pos()+"% - 3px)";requestAnimationFrame(loop)}
+$("hc").onclick=function(){if(!H||!H.on)return;H.on=0;var z=H.z,ok=Math.abs(pos()-H.c)<=H.w/2;$("hc").disabled=true;
+ if(ok){got[z.no]=(got[z.no]||0)+1;save();$("hp").className="pic";$("hm").innerHTML="つかまえた！ <b>"+esc(z.name)+"</b>";cut("hana","お見事だモン♪");draw()}
+ else{$("hm").textContent="にげられた……！";cut("iwa","惜しいな。もう一度、落ち着いて狙ってみたまえ。")}
+ H=null;$("hx").textContent="とじる";$("go").textContent="もう一度探す"};
+$("hx").onclick=function(){if(H)H.on=0;H=null;$("hunt").style.display="none";$("hx").textContent="やめる"};
+draw();
+// ---- 掛け合わせ（共有コード） ----
+function mul(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function child(a,b,seed){var r=mul(seed^(a.no*7919)^(b.no*104729)),A=a.name,B=b.name,ha=Math.ceil(A.length/2),hb_=Math.ceil(B.length/2),
+ nm=[A.slice(0,ha)+B.slice(hb_-(B.length%2?1:0)),B.slice(0,hb_)+A.slice(ha-(A.length%2?1:0)),A.slice(ha)+B.slice(0,hb_),B.slice(hb_)+A.slice(0,ha)],
+ k=Math.floor(r()*4),name=A,i;for(i=0;i<4;i++){name=nm[(k+i)%4];if(name!=A&&name!=B&&"ンーッ".indexOf(name[0])<0)break}
+ var mut=r()<.2,rar=Math.min(5,Math.round((a.rar+b.rar)/2)+(mut?1:0)),food=r()<.5?a.food:b.food,
+ pe=["おだやか","いたずら好き","臆病","負けず嫌い","のんびり屋","好奇心おうせい"][Math.floor(r()*6)],hb=r()<.5?a.hb:b.hb,
+ c1=String(a.cls).split("・")[0],c2=String(b.cls).split("・").pop();
+ return{name:name,rar:rar,mut:mut,food:food,hb:hb,cls:c1==c2?a.cls:c1+"・"+c2,
+ desc:A+"と"+B+"の面影をあわせもつ、"+hb+"に暮らす生き物。性格は"+pe+"で、好物は"+food+"。"+(mut?"まれに生まれる突然変異で、ほのかに光っている。":"")}}
+function fillB(){var l=Z.filter(has),a=$("ba").value,b=$("bb").value,o=l.map(function(z){return'<option value="'+z.no+'">'+esc(z.name)+'</option>'}).join("");
+ $("ba").innerHTML=o;$("bb").innerHTML=o;if(a)$("ba").value=a;if(b)$("bb").value=b;if(!b&&l.length>1)$("bb").selectedIndex=1;
+ $("bgo").disabled=l.length<2;$("bmsg").hidden=l.length>=2;$("brd").style.display=Z.length>=2?"block":"none"}
+function showKid(a,b,seed){var k=child(a,b,seed),code="ZK-"+a.no.toString(36)+"-"+b.no.toString(36)+"-"+seed.toString(36);
+ $("bo").innerHTML='<div class="pp"><div class="pic">'+pic(a)+'</div><b>×</b><div class="pic">'+pic(b)+'</div></div><h3>'+esc(k.name)+' <span class="st">'+stars(k.rar)+'</span>'+(k.mut?' <small>突然変異！</small>':'')+'</h3>'
+ +'<p style="margin:4px 0">'+esc(k.desc)+'</p><dl class="kd"><dt>分類</dt><dd>'+esc(k.cls)+'</dd><dt>好物</dt><dd>'+esc(k.food)+'</dd></dl>'
+ +'<p class="sub">この子のイラストはまだありません。ふたりの面影から想像してみてください。</p>'
+ +'<div class="row"><input id="bc" readonly value="'+code+'" aria-label="共有コード"><button class="btn o" data-d="cc">コードをコピー</button><button class="btn o" data-d="cl">リンクをコピー</button></div>';
+ $("bo").hidden=false;try{history.replaceState(null,"","#"+code)}catch(e){}}
+function kidFromCode(t){var m=/^#?ZK-([0-9a-z]+)-([0-9a-z]+)-([0-9a-z]+)$/i.exec(String(t).trim());
+ if(!m){$("bm2").textContent="コードの形が違います（例：ZK-1-2-k3f9a）";return}
+ var a=Z.find(function(z){return z.no==parseInt(m[1],36)}),b=Z.find(function(z){return z.no==parseInt(m[2],36)});
+ if(!a||!b){$("bm2").textContent="この図鑑にいない個体のコードです";return}
+ $("bm2").textContent="";showKid(a,b,parseInt(m[3],36))}
+function cpy(t,msg){var ok=function(){$("bm2").textContent=msg};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){prompt("コピーしてください",t)});else prompt("コピーしてください",t)}
+$("bgo").onclick=function(){var a=Z.find(function(z){return z.no==$("ba").value}),b=Z.find(function(z){return z.no==$("bb").value});
+ if(!a||!b)return;if(a==b){$("bm2").textContent="ちがう2種を選んでください";return}$("bm2").textContent="";showKid(a,b,Math.floor(Math.random()*1e9))};
+$("bin").onclick=function(){kidFromCode($("bi").value)};
+$("bo").onclick=function(e){var d=e.target.dataset.d,c=$("bc")&&$("bc").value;if(d=="cc")cpy(c,"コードをコピーしました");if(d=="cl")cpy(location.origin+location.pathname+"#"+c,"リンクをコピーしました")};
+fillB();if(/^#ZK-/i.test(location.hash))kidFromCode(location.hash);
+</script>
+<script src="common.js"></script></body></html>

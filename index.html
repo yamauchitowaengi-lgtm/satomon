@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>さとモンと仲間たち</title>
+<meta name="description" content="現場ではキリッと、オフィスではうとうと。クマとネコと個性的な仲間たちの、ゆるっと日常ノート。">
+<!-- 公開後に、下の YOUR-NAME（GitHubのユーザー名）と YOUR-REPO（リポジトリ名）を実際のものに書き換えます。LINEやXで共有したときの画像と説明に使われます -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="さとモンと仲間たち">
+<meta property="og:description" content="現場ではキリッと、オフィスではうとうと。クマとネコと個性的な仲間たちの、ゆるっと日常ノート。">
+<meta property="og:image" content="https://YOUR-NAME.github.io/YOUR-REPO/assets/hero/hero.jpg">
+<meta property="og:url" content="https://YOUR-NAME.github.io/YOUR-REPO/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+.hero{aspect-ratio:16/9;min-height:220px;border-radius:28px 28px 28px 6px;box-shadow:0 6px 0 var(--leaf)}
+.hero .pic{position:absolute;inset:0}.hero{position:relative;overflow:hidden;background:var(--sakura)}
+.tag{position:absolute;left:4%;top:7%;background:var(--paper);padding:10px 22px 12px;border-radius:6px;transform:rotate(-2deg);box-shadow:0 3px 0 var(--honey);border-left:10px solid var(--leaf)}
+.tag h1{font-size:clamp(1.4rem,5vw,2.6rem);font-weight:900;margin:0;line-height:1.3}
+.tag p{margin:0;color:var(--sub);font-size:.85rem}
+.lead{max-width:34em;margin:28px auto 8px;text-align:center}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:20px}
+.menu a{display:block;text-decoration:none;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:14px 18px;transition:transform .15s,border-color .15s}
+.menu a:nth-child(3n+1){border-radius:18px 18px 18px 4px}.menu a:nth-child(3n+2){border-radius:18px 4px 18px 18px}
+.menu a:hover{transform:translateY(-3px);border-color:var(--leaf)}
+.menu b{display:block;font-size:1.05rem}.menu small{color:var(--sub)}
+.today{max-width:520px;margin:30px auto 0;background:var(--paper);border:2px dashed var(--leaf);border-radius:20px;padding:6px 18px 14px}
+.today a{display:flex;gap:14px;align-items:center;text-decoration:none}
+.today .pic{width:96px;aspect-ratio:1;border-radius:14px;flex:none}
+.today b{display:block;font-size:1.1rem}.today small{color:var(--sub)}
+#intro{position:fixed;inset:0;z-index:50;background:#000;transition:opacity .8s}
+#intro video{width:100%;height:100%;object-fit:contain;display:block}
+#intro.off{opacity:0;pointer-events:none}
+#skip{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));border:2px solid #fff8;background:#0006;color:#fff;font:inherit;padding:6px 18px;border-radius:99px;cursor:pointer}
+#skip:focus-visible{outline:3px solid #fff}
+html.ip main,html.ip .hd,html.ip .ft{visibility:hidden}
+.re{text-align:center;font-size:.8rem;margin:24px 0 0}.re a{color:var(--sub)}
+.share{max-width:620px;margin:34px auto 0;text-align:center}
+.sb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.sb a,.sb button{border:2px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:.9rem;text-decoration:none;padding:6px 16px;border-radius:99px;cursor:pointer}
+.sb a:hover,.sb button:hover{border-color:var(--leaf)}.sb a:focus-visible,.sb button:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.share .note,.share .cnt{color:var(--sub);font-size:.8rem;margin:4px 0}.share .cnt b{color:var(--ink);font-size:1rem}
+</style></head><body><div id="intro"><video src="assets/intro/intro.mp4" poster="assets/intro/poster.jpg" muted playsinline disablepictureinpicture disableremoteplayback preload="auto" aria-label="オープニング動画"></video><button id="skip">スキップ ▶</button></div>
+
+<main>
+<div class="hero"><div class="pic"><span>🐻🌸🐱</span><img src="assets/hero/hero.jpg" alt="大きな樹の下に集まったさとモンと仲間たち" onerror="this.remove()"></div>
+<div class="tag"><h1>さとモンと仲間たち</h1><p>TEC建設コンサルタントの、ゆるっと日常ノート</p></div></div>
+<p class="lead">現場ではキリッと、オフィスではうとうと。<br>クマとネコと、ちょっと個性的な仲間たちの毎日をのぞいてみてください。</p>
+<div class="menu">
+<a href="characters.html"><b>🌸 なかまたち</b><small>9人のプロフィールと相関図</small></a>
+<a href="comic.html"><b>📖 4コマ漫画</b><small>連載中＋特別編の物語</small></a>
+<a href="gallery.html"><b>📷 ギャラリー</b><small>実写風フォトブック</small></a>
+<a href="diary.html"><b>🖍 絵日記</b><small>現場のできごと</small></a>
+<a href="games.html"><b>🎮 ミニゲーム</b><small>リバーシ・パズルなど</small></a>
+<a href="zukan.html"><b>🦖 空想動物図鑑</b><small>現場で見つけた珍生物</small></a>
+</div><section class="today" id="today" hidden><h2>本日の珍生物</h2>
+<a href="zukan.html"><div class="pic"><span>🐾</span><img id="ti" alt="" onerror="this.remove()"></div><div><b id="tn"></b><small id="td"></small></div></a></section>
+<section class="share" aria-label="シェア">
+<h2>このサイトを教える</h2>
+<div class="sb">
+<button id="sh-native" hidden>📲 共有する</button>
+<a id="sh-x" target="_blank" rel="noopener">𝕏 でポスト</a>
+<a id="sh-line" target="_blank" rel="noopener">LINE</a>
+<a id="sh-mail">✉ メール</a>
+<button id="sh-copy">🔗 リンクをコピー</button>
+</div>
+<p class="note" id="sh-msg" aria-live="polite">Instagramは、スマホの「共有する」から選べます。</p>
+<p class="cnt" id="cnt" hidden>アクセス数 <b id="cn"></b></p>
+</section>
+<p class="re"><a href="#intro" onclick="location.hash='intro';location.reload();return false">▶ オープニングをもう一度見る</a></p></main><script src="site-config.js"></script>
+<script>
+// シェアボタンとアクセスカウンター
+(function(){var $=function(i){return document.getElementById(i)},E=encodeURIComponent,C=window.SITE||{},
+B=C.url||location.href.split("#")[0].replace(/index\.html$/,""),T="さとモンと仲間たち｜ゆるっと日常ノート";
+$("sh-x").href="https://x.com/intent/tweet?text="+E(T)+"&url="+E(B);
+$("sh-line").href="https://social-plugins.line.me/lineit/share?url="+E(B);
+$("sh-mail").href="mailto:?subject="+E(T)+"&body="+E(T+"\n"+B);
+$("sh-copy").onclick=function(){var ok=function(){$("sh-msg").textContent="リンクをコピーしました"};
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(B).then(ok,function(){prompt("コピーしてください",B)});else prompt("コピーしてください",B)};
+if(navigator.share){$("sh-native").hidden=false;$("sh-native").onclick=function(){navigator.share({title:T,text:T,url:B}).catch(function(){})}}
+if(C.gc){fetch("https://"+C.gc+".goatcounter.com/counter/TOTAL.json").then(function(r){return r.json()}).then(function(d){$("cn").textContent=d.count;$("cnt").hidden=false}).catch(function(){})}
+})();
+</script>
+<script src="zukan-data.js"></script>
+<script>
+(function(){if(typeof ZUKAN=="undefined"||!ZUKAN.length)return;
+var d=new Date(),k=Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate())/864e5),z=ZUKAN[k%ZUKAN.length];
+document.getElementById("tn").textContent=z.name;
+document.getElementById("td").textContent=z.loc+"で発見";
+if(z.img)document.getElementById("ti").src=z.img;else document.getElementById("ti").remove();
+document.getElementById("today").hidden=false})();
+</script>
+
+<script>
+// オープニング動画：ブラウザを開いて最初の1回だけ流します（#intro を付けると再生）
+(function(){var el=document.getElementById("intro");if(!el)return;
+var seen=false;try{seen=sessionStorage.getItem("intro")=="1"}catch(e){}
+if(/^#intro/.test(location.hash))seen=false;
+if(seen||matchMedia("(prefers-reduced-motion:reduce)").matches){el.remove();return}
+var v=el.querySelector("video");document.body.style.overflow="hidden";document.documentElement.classList.add("ip");
+function end(){document.documentElement.classList.remove("ip");try{sessionStorage.setItem("intro","1")}catch(e){}v.pause();el.classList.add("off");document.body.style.overflow="";setTimeout(function(){el.remove()},900)}
+v.addEventListener("ended",end);v.addEventListener("error",end);
+document.getElementById("skip").onclick=end;
+// 十分に読み込めてから再生を始める（読み込み途中の再生は、カクつきの原因になります）。遅い回線でも4秒後には始めます。
+if(/debug/.test(location.hash)){var dg=document.createElement("pre"),n=0,t0=0,fps="-";dg.style.cssText="position:absolute;left:8px;top:8px;margin:0;padding:6px 10px;background:#000a;color:#0f0;font:12px monospace;z-index:2";el.appendChild(dg);
+if(v.requestVideoFrameCallback){(function cb(now){n++;if(!t0)t0=now;if(now-t0>=1000){fps=(n*1000/(now-t0)).toFixed(1);n=0;t0=now}v.requestVideoFrameCallback(cb)})(0)}
+setInterval(function(){var q=v.getVideoPlaybackQuality?v.getVideoPlaybackQuality():{},b=v.buffered.length?v.buffered.end(v.buffered.length-1).toFixed(1):0;
+dg.textContent=v.videoWidth+"x"+v.videoHeight+"  t="+v.currentTime.toFixed(1)+"s\nframes: "+q.totalVideoFrames+"  dropped: "+q.droppedVideoFrames+"\nshown fps: "+fps+"  buffered: "+b+"s"},500)}
+var started=false;function go(){if(started)return;started=true;var p=v.play();if(p&&p.catch)p.catch(end)}
+v.addEventListener("canplaythrough",go);setTimeout(go,4000);if(v.readyState>=4)go();
+})();
+</script>
+<script src="common.js"></script></body></html>

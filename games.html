@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ミニゲーム | さとモンと仲間たち</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="games.css">
+</head><body>
+<main>
+<h2>ミニゲーム</h2>
+<p style="color:var(--sub);font-size:.88rem;margin:0 0 18px">遊びたいゲームを選んでください。</p>
+<div class="grid" id="g"></div>
+</main>
+<script src="games-data.js"></script>
+<script src="puzzles-data.js"></script>
+<script>
+function pad(n){return("00"+n).slice(-3)}
+function nums(a){var o=[];(a||[]).forEach(function(r){if(typeof r=="number")o.push(r);else for(var n=r[0];n<=r[1];n++)o.push(n)});return o}
+document.getElementById("g").innerHTML=GAME_KINDS.map(function(k){
+ var L=k.page?nums(PUZZLES[k.id]):[],th=k.thumb||(L.length?"games/thumb/"+k.prefix+pad(Math.max.apply(null,L))+".jpg":"");
+ return'<a class="g" href="'+(k.page||k.file)+'"><div class="pic"><span>'+k.emoji+'</span>'+(th?'<img src="'+th+'" alt="" loading="lazy" onerror="this.remove()">':'')+'</div><div class="bd"><b>'+k.title+'</b><small>'+(k.page?L.length+" 作品":"すぐ遊べる")+'</small></div></a>'}).join("");
+</script>
+<script src="common.js"></script></body></html>
